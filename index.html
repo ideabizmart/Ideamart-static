@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ideamart Static Content</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --bg: #f9fafb;
+            --card-bg: #fff;
+            --border: #e5e7eb;
+            --primary: #2563eb;
+            --text: #111827;
+            --muted: #6b7280;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .card img, .card object {
+            max-width: 100%;
+            max-height: 100px;
+            object-fit: contain;
+        }
+
+        .filename {
+            font-size: 12px;
+            margin-top: 8px;
+            color: var(--muted);
+            text-align: center;
+            word-break: break-word;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .modal-content img,
+        .modal-content object {
+            max-width: 100%;
+            max-height: 300px;
+            margin-bottom: 15px;
+        }
+
+        code {
+            display: block;
+            background: #f3f4f6;
+            padding: 6px;
+            margin: 5px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: left;
+            word-break: break-all;
+        }
+
+        button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+<h2>Static Image Browser</h2>
+
+<label for="folder">Filter by folder: </label>
+<select id="folder"></select>
+
+<div class="grid" id="imageGrid"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div id="preview"></div>
+        <h3>Links</h3>
+        <p><b>Direct:</b> <code id="direct"></code></p>
+        <p><b>HTML Image:</b> <code id="htmlImg"></code></p>
+        <p><b>HTML Link:</b> <code id="htmlLink"></code></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+    async function loadImages() {
+        const res = await fetch("images.json");
+        const data = await res.json();
+
+        const folderSelect = document.getElementById("folder");
+        const grid = document.getElementById("imageGrid");
+
+        // Dropdown
+        folderSelect.innerHTML = `<option value="">All</option>`;
+        Object.keys(data).forEach(folder => {
+            folderSelect.innerHTML += `<option value="${folder}">${folder}</option>`;
+        });
+
+        function renderGrid(filter) {
+            grid.innerHTML = "";
+            Object.entries(data).forEach(([folder, files]) => {
+                if (filter && folder !== filter) return;
+                files.forEach(file => {
+                    const filename = file.split("/").pop();
+                    const ext = filename.split(".").pop().toLowerCase();
+                    let preview;
+                    if (ext === "svg") {
+                        preview = `<object data="${file}" type="image/svg+xml"></object>`;
+                    } else {
+                        preview = `<img src="${file}" alt="${filename}">`;
+                    }
+                    grid.innerHTML += `
+              <div class="card" onclick="showModal('${file}')">
+                ${preview}
+                <div class="filename">${filename}</div>
+              </div>
+            `;
+                });
+            });
+        }
+
+        folderSelect.addEventListener("change", () => {
+            renderGrid(folderSelect.value);
+        });
+
+        renderGrid("");
+    }
+
+    function showModal(url) {
+        const modal = document.getElementById("modal");
+        const preview = document.getElementById("preview");
+        const direct = document.getElementById("direct");
+        const htmlImg = document.getElementById("htmlImg");
+        const htmlLink = document.getElementById("htmlLink");
+
+        const ext = url.split('.').pop().toLowerCase();
+        if (ext === "svg") {
+            preview.innerHTML = `<object data="${url}" type="image/svg+xml"></object>`;
+        } else {
+            preview.innerHTML = `<img src="${url}" alt="preview">`;
+        }
+
+        direct.textContent = url;
+        htmlImg.textContent = `<img src="${url}" />`;
+        htmlLink.textContent = `<a href="${url}">Link</a>`;
+
+        modal.style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("modal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+    loadImages();
+</script>
+</body>
+</html>
