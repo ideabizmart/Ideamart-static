@@ -151,6 +151,7 @@
 </div>
 
 <script>
+    const BASE_URL = "https://static.ideamart.io/";
     async function loadImages() {
         const res = await fetch("images.json");
         const data = await res.json();
@@ -195,6 +196,7 @@
     }
 
     function showModal(url) {
+
         const modal = document.getElementById("modal");
         const preview = document.getElementById("preview");
         const direct = document.getElementById("direct");
@@ -208,6 +210,7 @@
             preview.innerHTML = `<img src="${url}" alt="preview">`;
         }
 
+        url = BASE_URL + url;
         direct.textContent = url;
         htmlImg.textContent = `<img src="${url}" />`;
         htmlLink.textContent = `<a href="${url}">Link</a>`;
