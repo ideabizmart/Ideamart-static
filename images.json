@@ -3,7 +3,17 @@
     "static/ideamart/logo.png"
   ],
   "ideabiz": [
-    "static/ideabiz/ideabiz-transparent-1.png"
-    "static/ideabiz/logo.svg"
+    "static/ideabiz/ideabiz-transparent-1.png",
+    "static/ideabiz/logo.svg",
+    "static/ideabiz/biz-logo.png",
+    "static/ideabiz/biz-logo-sq.png",
+    "static/ideabiz/logo.png",
+    "static/ideabiz/favicon-32x32.png",
+    "static/ideabiz/android-chrome-192x192.png",
+    "static/ideabiz/android-chrome-512x512.png",
+    "static/ideabiz/apple-touch-icon.png",
+    "static/ideabiz/favicon.ico",
+    "static/ideabiz/favicon-16x16.png",
+    "static/ideabiz/biz-logo-box.png"
   ]
 }
