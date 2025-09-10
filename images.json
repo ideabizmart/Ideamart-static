@@ -15,5 +15,20 @@
     "static/ideabiz/favicon.ico",
     "static/ideabiz/favicon-16x16.png",
     "static/ideabiz/biz-logo-box.png"
+  ],
+  "microsoft": [
+    "static/microsoft/entra.png",
+    "static/microsoft/microsoft.svg"
+  ],
+  "google": [
+    "static/google/loginwithgoogle-light.svg",
+    "static/google/loginwithgoogle-dark.svg",
+    "static/google/loginwithgoogle-grey.svg",
+    "static/google/loginwithgoogle-light-r.svg",
+    "static/google/loginwithgoogle-dark-r.svg",
+    "static/google/loginwithgoogle-grey-r.svg",
+    "static/google/google.png",
+    "static/google/google2.png",
+    "static/google/google.svg"
   ]
 }
