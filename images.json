@@ -30,5 +30,11 @@
     "static/google/google.png",
     "static/google/google2.png",
     "static/google/google.svg"
+  ],
+  "dialog": [
+    "static/dialog/dialog-logo.svg"
+  ],
+  "airtel": [
+    "static/airtel/airtel-logo.png"
   ]
 }
