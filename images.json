@@ -33,6 +33,7 @@
   ],
   "dialog": [
     "static/dialog/dialog-logo.svg"
+    "static/dialog/dialog-logo.png"
   ],
   "airtel": [
     "static/airtel/airtel-logo.png"
